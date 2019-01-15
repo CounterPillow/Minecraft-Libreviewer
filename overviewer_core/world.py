@@ -848,60 +848,66 @@ class RegionSet(object):
                     result[o*2+1] = (b[i] & 0xf0) >> 4
             elif bits_per_value == 5:
                 for o, i in enumerate(xrange(0, len(b), bits_per_value)):
-                    result[o*8] = b[i] & 0x1f
-                    result[o*8+1] = ((b[i+1] & 0x03) << 3) | ((b[i] & 0xe0) >> 5)
-                    result[o*8+2] = (b[i+1] & 0x7c) >> 2
-                    result[o*8+3] = ((b[i+2] & 0x0f) << 1) | ((b[i+1] & 0x80) >> 7)
-                    result[o*8+4] = ((b[i+3] & 0x01) << 4) | ((b[i+2] & 0xf0) >> 4)
-                    result[o*8+5] = (b[i+3] & 0x3e) >> 1
-                    result[o*8+6] = ((b[i+4] & 0x07) << 2) | ((b[i+3] & 0xc0) >> 6)
-                    result[o*8+7] = (b[i+4] & 0xf8) >> 3
+                    off = o*8
+                    result[off] = b[i] & 0x1f
+                    result[off+1] = ((b[i+1] & 0x03) << 3) | ((b[i] & 0xe0) >> 5)
+                    result[off+2] = (b[i+1] & 0x7c) >> 2
+                    result[off+3] = ((b[i+2] & 0x0f) << 1) | ((b[i+1] & 0x80) >> 7)
+                    result[off+4] = ((b[i+3] & 0x01) << 4) | ((b[i+2] & 0xf0) >> 4)
+                    result[off+5] = (b[i+3] & 0x3e) >> 1
+                    result[off+6] = ((b[i+4] & 0x07) << 2) | ((b[i+3] & 0xc0) >> 6)
+                    result[off+7] = (b[i+4] & 0xf8) >> 3
             elif bits_per_value == 6:
                 for o, i in enumerate(xrange(0, len(b), bits_per_value / 2)):
-                    result[o*4] = b[i] & 0x3f
-                    result[o*4+1] = ((b[i+1] & 0x0f) << 2) | ((b[i]   & 0xc0) >> 6)
-                    result[o*4+2] = ((b[i+2] & 0x03) << 4) | ((b[i+1] & 0xf0) >> 4)
-                    result[o*4+3] = (b[i+2] & 0xfc) >> 2
+                    off = o*4
+                    result[off] = b[i] & 0x3f
+                    result[off+1] = ((b[i+1] & 0x0f) << 2) | ((b[i]   & 0xc0) >> 6)
+                    result[off+2] = ((b[i+2] & 0x03) << 4) | ((b[i+1] & 0xf0) >> 4)
+                    result[off+3] = (b[i+2] & 0xfc) >> 2
             elif bits_per_value == 7:
                 for o, i in enumerate(xrange(0, len(b), bits_per_value)):
-                    result[o*8] = b[i] & 0x7f
-                    result[o*8+1] = ((b[i+1] & 0x3f) << 1) | ((b[i]   & 0x80) >> 7)
-                    result[o*8+2] = ((b[i+2] & 0x1f) << 2) | ((b[i+1] & 0xc0) >> 6)
-                    result[o*8+3] = ((b[i+3] & 0x0f) << 3) | ((b[i+2] & 0xe0) >> 5)
-                    result[o*8+4] = ((b[i+4] & 0x07) << 4) | ((b[i+3] & 0xf0) >> 4)
-                    result[o*8+5] = ((b[i+5] & 0x03) << 5) | ((b[i+4] & 0xf8) >> 3)
-                    result[o*8+6] = ((b[i+6] & 0x01) << 6) | ((b[i+5] & 0xfc) >> 2)
-                    result[o*8+7] = (b[i+6] & 0xfc) >> 1
+                    off = o*8
+                    result[off] = b[i] & 0x7f
+                    result[off+1] = ((b[i+1] & 0x3f) << 1) | ((b[i]   & 0x80) >> 7)
+                    result[off+2] = ((b[i+2] & 0x1f) << 2) | ((b[i+1] & 0xc0) >> 6)
+                    result[off+3] = ((b[i+3] & 0x0f) << 3) | ((b[i+2] & 0xe0) >> 5)
+                    result[off+4] = ((b[i+4] & 0x07) << 4) | ((b[i+3] & 0xf0) >> 4)
+                    result[off+5] = ((b[i+5] & 0x03) << 5) | ((b[i+4] & 0xf8) >> 3)
+                    result[off+6] = ((b[i+6] & 0x01) << 6) | ((b[i+5] & 0xfc) >> 2)
+                    result[off+7] = (b[i+6] & 0xfc) >> 1
             elif bits_per_value == 9:
                 for o, i in enumerate(xrange(0, len(b), bits_per_value)):
-                    result[o*8] = ((b[i+1] & 0x01) << 8) | b[0]
-                    result[o*8+1] = ((b[i+2] & 0x03) << 7) | ((b[i+1] & 0xfe) >> 1)
-                    result[o*8+2] = ((b[i+3] & 0x07) << 6) | ((b[i+2] & 0xfc) >> 2)
-                    result[o*8+3] = ((b[i+4] & 0x0f) << 5) | ((b[i+3] & 0xf8) >> 3)
-                    result[o*8+4] = ((b[i+5] & 0x1f) << 4) | ((b[i+4] & 0xf0) >> 4)
-                    result[o*8+5] = ((b[i+6] & 0x3f) << 3) | ((b[i+5] & 0xe0) >> 5)
-                    result[o*8+6] = ((b[i+7] & 0x7f) << 2) | ((b[i+6] & 0xc0) >> 6)
-                    result[o*8+7] = (b[i+8] << 1) | ((b[i+7] & 0x80) >> 7)
+                    off = o*8
+                    result[off] = ((b[i+1] & 0x01) << 8) | b[0]
+                    result[off+1] = ((b[i+2] & 0x03) << 7) | ((b[i+1] & 0xfe) >> 1)
+                    result[off+2] = ((b[i+3] & 0x07) << 6) | ((b[i+2] & 0xfc) >> 2)
+                    result[off+3] = ((b[i+4] & 0x0f) << 5) | ((b[i+3] & 0xf8) >> 3)
+                    result[off+4] = ((b[i+5] & 0x1f) << 4) | ((b[i+4] & 0xf0) >> 4)
+                    result[off+5] = ((b[i+6] & 0x3f) << 3) | ((b[i+5] & 0xe0) >> 5)
+                    result[off+6] = ((b[i+7] & 0x7f) << 2) | ((b[i+6] & 0xc0) >> 6)
+                    result[off+7] = (b[i+8] << 1) | ((b[i+7] & 0x80) >> 7)
             elif bits_per_value == 10:
                 for o, i in enumerate(xrange(0, len(b), bits_per_value / 2)):
-                    result[o*4] = ((b[i+1] & 0x03)   << 8) |   b[0]
-                    result[o*4+1] = ((b[i+2] & 0x0f) << 6) | ((b[i+1] & 0xfc) >> 2)
-                    result[o*4+2] = ((b[i+3] & 0x3f) << 4) | ((b[i+2] & 0xf0) >> 4)
-                    result[o*4+3] = (b[i+4] << 2)          | ((b[i+3] & 0xc0) >> 6)
+                    off = o*4
+                    result[off] = ((b[i+1] & 0x03)   << 8) |   b[0]
+                    result[off+1] = ((b[i+2] & 0x0f) << 6) | ((b[i+1] & 0xfc) >> 2)
+                    result[off+2] = ((b[i+3] & 0x3f) << 4) | ((b[i+2] & 0xf0) >> 4)
+                    result[off+3] = (b[i+4] << 2)          | ((b[i+3] & 0xc0) >> 6)
             elif bits_per_value == 11:
                 for o, i in enumerate(xrange(0, len(b), bits_per_value)):
-                    result[o*8] = ((b[i+1] & 0x07)   << 8) |   b[0]
-                    result[o*8+1] = ((b[i+2] & 0x3f) << 5) | ((b[i+1] & 0xf8) >> 3)
-                    result[o*8+2] = ((b[i+4] & 0x01) << 10)| (b[i+3] << 2) | ((b[i+2] & 0xc0) >> 6)
-                    result[o*8+3] = ((b[i+5] & 0x0f) << 7) | ((b[i+4] & 0xfe) >> 1)
-                    result[o*8+4] = ((b[i+6] & 0x7f) << 4) | ((b[i+5] & 0xf0) >> 4)
-                    result[o*8+5] = ((b[i+8] & 0x03) << 9) | (b[i+7] << 1) | ((b[i+6] & 0x80) >> 7)
-                    result[o*8+6] = ((b[i+9] & 0x1f) << 2) | ((b[i+8] & 0xfc) >> 2)
-                    result[o*8+7] = (b[i+10]         << 3) | ((b[i+9] & 0xe0) >> 5)
+                    off = o*8
+                    result[off] = ((b[i+1] & 0x07)   << 8) |   b[0]
+                    result[off+1] = ((b[i+2] & 0x3f) << 5) | ((b[i+1] & 0xf8) >> 3)
+                    result[off+2] = ((b[i+4] & 0x01) << 10)| (b[i+3] << 2) | ((b[i+2] & 0xc0) >> 6)
+                    result[off+3] = ((b[i+5] & 0x0f) << 7) | ((b[i+4] & 0xfe) >> 1)
+                    result[off+4] = ((b[i+6] & 0x7f) << 4) | ((b[i+5] & 0xf0) >> 4)
+                    result[off+5] = ((b[i+8] & 0x03) << 9) | (b[i+7] << 1) | ((b[i+6] & 0x80) >> 7)
+                    result[off+6] = ((b[i+9] & 0x1f) << 2) | ((b[i+8] & 0xfc) >> 2)
+                    result[off+7] = (b[i+10]         << 3) | ((b[i+9] & 0xe0) >> 5)
             elif bits_per_value == 12:
                 for o, i in enumerate(xrange(0, len(b), bits_per_value / 4)):
-                    result[i*2] = ((b[i+1] & 0x0f) << 8) |   b[0]
-                    result[i*2+i] = (b[i+2]        << 4) | ((b[i+1] & 0xf0) >> 4)
+                    result[o*2] = ((b[i+1] & 0x0f) << 8) |   b[0]
+                    result[o*2+1] = (b[i+2]        << 4) | ((b[i+1] & 0xf0) >> 4)
         return result
 
     def _get_blockdata_v113(self, section, unrecognized_block_types):
